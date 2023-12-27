@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      // ... Your Firebase configuration
+      apiKey: "AIzaSyCTGgkLiY9mVLXdOdkYZwtkRXgR1eBF23g",
+  authDomain: "alumni-150d5.firebaseapp.com",
+  projectId: "alumni-150d5",
+  storageBucket: "alumni-150d5.appspot.com",
+  messagingSenderId: "464642797756",
+  appId: "1:464642797756:web:2b81c5d09a2caac2b3e0b9",
+  measurementId: "G-VV6KQNKP6W"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to handle login
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Redirect to user info page upon successful login
+          window.location.href = "user_info.html";
+        })
+        .catch((error) => {
+          // Handle login errors
+          const errorMessage = error.message;
+          // Display error message on the page
+          document.getElementById('error-message').innerText = errorMessage;
+        });
+    }
+
+    // Function to toggle password visibility
+    function togglePassword() {
+      let passwordInput = document.getElementById('password');
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+      } else {
+        passwordInput.type = 'password';
+      }
+    }
+
+    // Function to toggle login card visibility
+    function toggleLoginCard() {
+    let card = document.querySelector('.card');
+    if (card.style.display === 'none' || card.style.display === '') {
+        card.style.display = 'block'; // Show the card
+        card.style.animation = 'fadeInScaleUp 0.5s ease-out forwards'; // Apply animation
+    } else {
+        card.style.display = 'none'; // Hide the card
+    }
+}
+
+    // Event listener to handle 'Enter' key for login
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('login-form').addEventListener('keyup', function(event) {
+        if (event.keyCode === 13) {
+          login();
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <!-- Header with Text and Links -->
+  <div class="header">
+    <span class="alumni-text">ALUMNI</span>
+    <nav class="top-center-nav">
+      <a href="index.html">Home</a>
+      <a href="infos.html">Infos</a>
+    </nav>
+    <div class="animated-title">
+      <h1 class="glitch" data-text="Alumni Hub:">Alumni Hub: </h1>
+      <h1 class="glitch" data-text="Uniting Past, Present, and Future Success">Uniting Past, Present, and Future Success</h1>
+  </div>
+  </div>
+
+  <!-- Trigger Button for the Login Card -->
+  <button onclick="toggleLoginCard()" class="trigger-button">Login</button>
+
+  <!-- Login Card -->
+  <div class="card" style="display:none;">
+    <div class="close" onclick="toggleLoginCard()">X</div>
+    <h1>Login Now</h1>
+    <form id="login-form">
+      <div class="input-group">
+        <input type="email" id="email" placeholder="Enter your Email" required>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" class="password-input" placeholder="Enter your Password" required>
+        <span onclick="togglePassword()" class="toggle-password-eye">👁️</span>
+      </div>
+      <button type="button" onclick="login()" class="login-btn">Login Now</button>
+      <p id="error-message"></p>
+    </form>
+    <div class="footer-links">
+      <p>Don't have an account? <a href="signin.html">Sign up from here</a></p>
+      <br>
+      <p><a href="forgot_password.html">Forgot password?</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Additional scripts can be added here if needed.
+    function togglePassword() {
+  let passwordInput = document.getElementById('password');
+  let passwordEye = document.querySelector('.toggle-password-eye');
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    passwordEye.textContent = '👁️‍🗨️'; // Change icon to indicate password is visible
+  } else {
+    passwordInput.type = 'password';
+    passwordEye.textContent = '👁️'; // Change icon back
+  }
+}
+  </script>
+</body>
+</html>

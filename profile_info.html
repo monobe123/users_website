@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile Information</title>
+    <link rel="stylesheet" href="profile_info.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <!-- Your Firebase configuration -->
+    <script>
+        var firebaseConfig = {
+            // ...Your Firebase configuration
+            databaseURL: "https://alumni-150d5-default-rtdb.firebaseio.com",
+      apiKey: "AIzaSyCTGgkLiY9mVLXdOdkYZwtkRXgR1eBF23g",
+      authDomain: "alumni-150d5.firebaseapp.com",
+      projectId: "alumni-150d5",
+      storageBucket: "alumni-150d5.appspot.com",
+      messagingSenderId: "464642797756",
+      appId: "1:464642797756:web:2b81c5d09a2caac2b3e0b9",
+      measurementId: "G-VV6KQNKP6W"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+<body>
+    <div class="profile-card">
+        <div class="back-button-container">
+            <a href="users_info.html" id="backButton" title="Go back">&#8592; Back</a> <!-- Unicode arrow -->
+        </div>
+        <img id="userImage" src="default_image_url" alt="Profile Image" class="profile-image">
+
+        <div class="info-section">
+            <div class="personal-info">
+                <h2>Personal Information</h2>
+                <div id="personalDetails">
+                    <!-- Personal details will be loaded here -->
+                </div>
+            </div>
+            <div class="professional-info">
+                <h2>Professional Information</h2>
+                <div id="professionalDetails">
+                    <!-- Professional details will be loaded here -->
+                </div>
+                <div id="shortBio" class="short-bio">
+                    <!-- Short Bio will be loaded here -->
+                </div>
+            </div>
+        </div>
+        <a href="mailto:user@example.com" class="send-email">Send Email</a>
+    </div>
+    <script>
+        let currentUser = null;
+        let hasLiked = false; 
+        // Function to format the short bio with 8 words per line
+        function formatShortBio(shortBio) {
+        const words = shortBio.split(' ');
+        const lines = [];
+        for (let i = 0; i < words.length; i += 7) {  // Change from 8 to 7 for seven words per line
+            lines.push(words.slice(i, i + 7).join(' '));
+        }
+        return lines.join('<br>'); // Use <br> to break lines in HTML
+    }
+
+        // Function to display the user profile
+        firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        firebase.database().ref('/users/' + user.uid).once('value').then(function(snapshot) {
+            const userData = snapshot.val();
+            displayUserProfile(userData); // Call displayUserProfile here with userData
+            displayLikeCount(); // Ensure user is set before calling this
+        }).catch(function(error) {
+            console.error("Error fetching user data:", error);
+        });
+    } else {
+        console.log("User is not signed in.");
+        // Redirect or inform user
+    }
+});
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                currentUser = user; // Set the global user
+                displayUserProfile(); // Function to render user profile
+                displayLikeCount(); // Function to display like count
+            } else {
+                console.log("User is not signed in.");
+                // Handle non-authenticated user scenario
+            }
+        });
+
+        function displayUserProfile(userData) {
+            const userImageElement = document.getElementById("userImage");
+            userImageElement.src = userData.image || 'path/to/your/default_image.jpg'; // Update with path to your default image
+
+            const personalDetailsDiv = document.getElementById("personalDetails");
+            let personalDetailsHtml = `
+                <p><strong>Name:</strong> ${userData.name || 'N/A'}</p>
+                <p><strong>Last Name:</strong> ${userData.lastName || 'N/A'}</p>
+                <p><strong>Gender:</strong> ${userData.gender || 'N/A'}</p>
+                <p><strong>Phone Number:</strong> ${userData.phoneNumber || 'N/A'}</p>
+                <p><strong>Birth Date:</strong> ${userData.birthDate || 'N/A'}</p>
+                <p><strong>Age:</strong> ${userData.age || 'N/A'}</p>
+                <p><strong>Interests:</strong> ${userData.interests || 'No interests listed.'}</p>
+            `;
+            personalDetailsDiv.innerHTML = personalDetailsHtml;
+
+            const professionalDetailsDiv = document.getElementById("professionalDetails");
+            let professionalDetailsHtml = `
+                <p><strong>Email:</strong> ${userData.email || 'No email provided.'}</p>
+                <p><strong>Identity Number:</strong> ${userData.identityNumber || 'N/A'}</p>
+                <p><strong>University:</strong> ${userData.university || 'N/A'}</p>
+                <p><strong>Major:</strong> ${userData.major || 'N/A'}</p>
+                <p><strong>Year of Registration:</strong> ${userData.yearOfRegistration || 'N/A'}</p>
+                <p><strong>Year of Graduation:</strong> ${userData.graduationYear || 'N/A'}</p>
+                <p><strong>Current Job:</strong> ${userData.currentJob || 'No current job listed.'}</p>
+                <p><strong>Clubs:</strong> ${userData.clubs || 'No clubs listed.'}</p>
+                <p><strong>Social Networks:</strong> ${userData.socialNetworks || 'No social networks listed.'}</p>
+                <p><strong>Short Bio:</strong><br>${formatShortBio(userData.shortbio || 'No bio provided.')}</p>
+            `;
+            professionalDetailsDiv.innerHTML = professionalDetailsHtml;
+
+            // Update Send Email link with the user's email
+            const sendEmailLink = document.querySelector(".send-email");
+            sendEmailLink.href = `mailto:${userData.email || 'default@example.com'}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+body {
+    font-family: 'Arial', sans-serif; /* Professional font */
+    background-color: #f4f7f6;
+    background-image: url('6.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: #333333; /* Dark color for professional tone */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    background-color: rgba(255, 255, 255, 0); /* Semi-transparent background for readability */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.alumni-text {
+    font-size: 3rem; /* Increased size */
+    color: white; /* Changed color to white */
+    font-weight: bold;/* Replace 'FancyFontName' with the actual fancy font you want */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Centering 'Home' and 'Infos' links */
+.top-center-nav {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    padding: 17px 20px;
+}
+
+.top-center-nav a {
+    text-decoration: none;
+    color: #ffffff;
+    margin: 0 15px;
+    font-weight: bold;
+    font-size: 1.3rem; /* Made the Home link larger */
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+.top-center-nav a:hover {
+    color: #5753c9;
+}
+
+.main-content {
+    width: 90%; /* Or specific px for wider card, e.g., 1000px */
+    max-width: 1200px; /* Adjust maximum width as needed */
+    margin: 20px auto; /* Ensures some margin from the top of the browser */
+    padding: 40px; /* More padding for a spacious look */
+    background-color: rgba(255, 255, 255, 0.98); /* Slightly less transparent for readability */
+    border-radius: 10px; /* Slightly larger radius for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* Professional font */
+}
+
+h1 {
+    color: rgb(0, 0, 0); /* Changed color to white */
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem; /* Increased size for more prominence */
+    font-family: 'FancyFontName', cursive; /* Replace 'FancyFontName' with the actual fancy font you want */
+}
+
+p, ul, li {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    font-family: 'FancyFontName', sans-serif; /* Apply fancy font to text elements */
+}

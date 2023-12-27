@@ -1,0 +1,52 @@
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.filters {
+    display: none; /* Initially hide the filter options */
+    margin-bottom: 20px;
+}
+
+.filters input {
+    margin-right: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.filter-btn {
+    display: block;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-btn:hover {
+    background-color: #43a047;
+}
+
+.show-filters .filters {
+    display: block;
+}
+
+.user-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+

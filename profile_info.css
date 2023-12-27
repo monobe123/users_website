@@ -1,0 +1,172 @@
+/* Root Variables for easy theme management */
+:root {
+    --primary-color: #4a69bd;
+
+    --background-color: #f1f2f6;
+    --text-color: #333;
+    --text-light: #777;
+    --border-radius: 10px;
+    --box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Global Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, h1, h2, p, a {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+}
+
+body {
+    background-image: url('6.jpg'); /* Update with the actual path to your image */
+    /*background-size: cover;
+    background-position: center;  
+    background-repeat: no-repeat; */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; /* Ensure the whole image is always visible */
+    background-attachment: fixed; /* Optional: to keep the image fixed during scroll */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Profile Card Styling */
+.profile-card {
+    max-width: 800px;
+    margin: 30px auto;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    background: #fffffff1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-top: 19px; /* Pull the image up */
+    border: 5px solid #0011ff;
+}
+
+.info-section {
+    padding: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.personal-info, .professional-info {
+    padding: 20px;
+    border-bottom: 1px solid var(--text-light);
+}
+
+.short-bio {
+    background-color: var(--secondary-color);
+    color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    width: calc(100% - 40px);
+}
+
+/* Typography and Links */
+h1, h2 {
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: var(--primary-color);
+}
+
+p {
+    font-size: 1em;
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+
+.send-email {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 10px 20px;
+    margin: 20px 0;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.send-email:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media only screen and (min-width: 700px) {
+    .info-section {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .personal-info, .professional-info {
+        width: 48%;
+        border: none;
+    }
+
+    .short-bio {
+        width: 100%;
+    }
+}
+
+
+.like-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+#likeButton {
+    font-size: 24px;
+    color: red;
+    cursor: pointer;
+    background: none;
+    border: none;
+    margin-left: 10px;
+}
+
+#likeCounter {
+    font-size: 18px;
+}
+
+
+
+.back-button-container {
+    position: absolute;  /* Adjust as needed */
+    top: 20px;           /* Adjust as needed */
+    left: 20px;          /* Adjust as needed */
+}
+
+#backButton {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #f2f2f2;
+    color: #333;
+    text-decoration: none; /* Removes underline from links */
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+#backButton:hover {
+    background-color: #e2e2e2;
+}

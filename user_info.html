@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Information</title>
+  <link rel="stylesheet" href="user_info.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+  
+  <script>
+    const firebaseConfig = {
+      // ... Your Firebase configuration
+      apiKey: "AIzaSyCTGgkLiY9mVLXdOdkYZwtkRXgR1eBF23g",
+  authDomain: "alumni-150d5.firebaseapp.com",
+  projectId: "alumni-150d5",
+  storageBucket: "alumni-150d5.appspot.com",
+  messagingSenderId: "464642797756",
+  appId: "1:464642797756:web:2b81c5d09a2caac2b3e0b9",
+  measurementId: "G-VV6KQNKP6W"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    let profileInfoVisible = false;
+    const database = firebase.database();
+    function displayUserProfile() {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        const userId = user.uid;
+        const profileInfoDiv = document.getElementById('profile-info');
+
+        if (!profileInfoVisible) {
+          database.ref('users/' + userId).once('value')
+            .then((snapshot) => {
+              const userData = snapshot.val();
+              if (userData) {
+                profileInfoDiv.innerHTML = `
+                <h2>User Profile Information</h2>
+    <p><strong>Name:</strong> ${userData.name}</p>
+    <p><strong>Last Name:</strong> ${userData.lastName}</p>
+    <p><strong>Email:</strong> ${userData.email}</p>
+    <p><strong>Gender:</strong> ${userData.gender}</p>
+    <p><strong>Phone Number:</strong> ${userData.phoneNumber}</p>
+    <p><strong>Birth Date:</strong> ${userData.birthDate}</p>
+    <p><strong>Age:</strong> ${userData.age}</p>
+    <p><strong>Identity Number:</strong> ${userData.identityNumber}</p>
+    <p><strong>City:</strong> ${userData.city}</p>
+    <p><strong>Current Year of Study:</strong> ${userData.yearOfStudy}</p>
+    <p><strong>School:</strong> ${userData.school}</p>
+    <p><strong>University:</strong> ${userData.university}</p>
+    <p><strong>Year of Registration:</strong> ${userData.yearOfRegistration}</p>
+    <p><strong>Year of Graduation:</strong> ${userData.yearOfGraduation}</p>
+    <p><strong>Major:</strong> ${userData.major}</p>
+    <p><strong>Clubs:</strong> ${userData.clubs}</p>
+    <p><strong>Interests:</strong> ${userData.interests}</p>
+    <p><strong>Social Networks:</strong> ${userData.socialNetworks}</p>
+    <p><strong>Current Job:</strong> ${userData.currentJob}</p>
+    <p><strong>shortbio:</strong> ${userData.shortbio}</p>
+    <img src="${userData.image}" alt="Profile Image" class="profile-image">
+                `;
+              } else {
+                profileInfoDiv.innerHTML = "<p>No user data found!</p>";
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching user data:", error);
+            });
+        } else {
+          profileInfoDiv.innerHTML = '';
+        }
+      } else {
+        document.getElementById('profile-info').innerHTML = "<p>No user authenticated!</p>";
+      }
+      profileInfoVisible = !profileInfoVisible;
+    }
+
+    function navigateToUsersInfo() {
+      window.location.href = "users_info.html";
+    }
+
+    function saveUserInfo(event) {
+    event.preventDefault(); // Prevent form submission for now
+
+    const name = document.getElementById('name').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value; // New field
+    const gender = document.getElementById('gender').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const birthDate = document.getElementById('birthDate').value;
+    const age = document.getElementById('age').value;
+    const identityNumber = document.getElementById('identityNumber').value;
+    const city = document.getElementById('city').value;
+    const yearOfStudy = document.getElementById('yearOfStudy').value;
+    const university = document.getElementById('university').value;
+    const yearOfRegistration = document.getElementById('yearOfRegistration').value;
+    const yearOfGraduation = document.getElementById('yearOfGraduation').value;
+    const major = document.getElementById('major').value;
+    const clubs = document.getElementById('clubs').value;
+    const interests = document.getElementById('interests').value;
+    const socialNetworks = document.getElementById('socialNetworks').value;
+    const shortbio = document.getElementById('shortbio').value;
+    const currentJob = document.getElementById('currentJob').value;
+
+    const imageInput = document.getElementById('image');
+    const imageFile = imageInput.files[0]; // Get the uploaded file
+
+    // Assuming you're using Firebase Storage to store the image file
+    const storageRef = firebase.storage().ref();
+    const imagesRef = storageRef.child('profile_images/' + imageFile.name);
+
+    // Upload the image file to Firebase Storage
+    imagesRef.put(imageFile).then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((downloadURL) => {
+            // Save user information to the Realtime Database under 'users' node
+            const userId = firebase.auth().currentUser.uid;
+            database.ref('users/' + userId).set({
+                name,
+                lastName,
+                email, // New field
+                gender,
+                phoneNumber,
+                birthDate,
+                age,
+                identityNumber,
+                city,
+
+                yearOfStudy,
+                university,
+                yearOfRegistration,
+                yearOfGraduation,
+                major,
+                clubs,
+                interests,
+                socialNetworks,
+                currentJob,
+                shortbio,
+                image: downloadURL // Store the image URL in the database
+            }).then(() => {
+                // Inform user that information is saved
+                alert('User information saved successfully!');
+                // Display user profile information
+                displayUserProfile();
+            }).catch((error) => {
+                console.error("Error saving user information:", error);
+            });
+        });
+    }).catch((error) => {
+        console.error("Error uploading image:", error);
+    });
+}
+
+  </script>
+</head>
+<body>
+  <div class="card">
+    <h1>Personal Information</h1>
+    <br>
+    <form id="user-info-form" onsubmit="saveUserInfo(event);">
+      <input type="text" id="name" placeholder="Enter name" required>
+      <input type="text" id="lastName" placeholder="Enter last name" required>
+      <select id="gender" required>
+        <option value="" disabled selected>Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <input type="text" id="phoneNumber" placeholder="Enter phone number" required>
+      <input type="date" id="birthDate" placeholder="Birth Date" required>
+      <input type="number" id="age" placeholder="Enter age" required>
+      <h1>Professional Information</h1>
+    <br>
+      <input type="text" id="identityNumber" placeholder="Enter identity number" required>
+      <input type="text" id="email" placeholder="Enter email" required>
+      <input type="number" id="yearOfStudy" placeholder="Enter current year of study" required>
+      <input type="text" id="university" placeholder="Enter university" required>
+      <input type="text" id="yearOfRegistration" placeholder="Enter year of registration" required>
+      <input type="text" id="yearOfGraduation" placeholder="Enter year of graduation" required>
+      <input type="text" id="major" placeholder="Enter major (e.g., CLE-INFO)" required>
+      <input type="text" id="clubs" placeholder="Enter clubs" required>
+      <input type="text" id="interests" placeholder="Enter interests" required>
+      <input type="text" id="socialNetworks" placeholder="Enter your social networks" required>
+      <input type="text" id="currentJob" placeholder="Enter current job" required>
+      <input type="text" id="city" placeholder="Enter city" required>
+      <input type="text" id="shortbio" placeholder="Short Bio" >
+      <input type="file" id="image" accept="image/*" required>
+      <button type="submit">Submit</button>
+    </form>
+    <!--    <button type="button" onclick="displayUserProfile()">Profile Information</button>
+    <div id="profile-info"></div>
+    <p id="error-message"></p>    -->
+    <button type="button" onclick="navigateToUsersInfo()">Show All Users</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="person.css"> <!-- Ensure this points to your actual CSS file -->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script>
+        var firebaseConfig = {
+            // ...Your Firebase configuration
+            databaseURL: "https://alumni-150d5-default-rtdb.firebaseio.com",
+      apiKey: "AIzaSyCTGgkLiY9mVLXdOdkYZwtkRXgR1eBF23g",
+      authDomain: "alumni-150d5.firebaseapp.com",
+      projectId: "alumni-150d5",
+      storageBucket: "alumni-150d5.appspot.com",
+      messagingSenderId: "464642797756",
+      appId: "1:464642797756:web:2b81c5d09a2caac2b3e0b9",
+      measurementId: "G-VV6KQNKP6W"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+<body>
+    <div class="back-button-container">
+        <a href="users_info.html" id="backButton" title="Go back">&#8592; Back</a> <!-- Unicode arrow -->
+    </div>
+    <div id="userProfile" class="profile-container">
+        <!-- Dynamic user information will be displayed here -->
+    </div>
+    <script>
+        function formatShortBio(shortBio) {
+            const words = shortBio.split(' ');
+            const lines = [];
+            for (let i = 0; i < words.length; i += 7) { 
+                lines.push(words.slice(i, i + 7).join(' '));
+            }
+            return lines.join('<br>'); // Use <br> to break lines in HTML
+        }
+
+        function fetchAndDisplayUserInfo() {
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get('userId');
+
+            if (!userId) {
+                document.getElementById('userProfile').innerText = "User not found.";
+                return;
+            }
+
+            const userRef = firebase.database().ref('users/' + userId);
+            userRef.once('value').then(snapshot => {
+                const userData = snapshot.val();
+                if (userData) {
+                    displayUserInfo(userData);
+                } else {
+                    document.getElementById('userProfile').innerText = "User not found.";
+                }
+            }).catch(error => {
+                document.getElementById('userProfile').innerText = "Error loading profile.";
+            });
+        }
+
+        function displayUserInfo(userData) {
+            const userProfileDiv = document.getElementById('userProfile');
+
+            userProfileDiv.innerHTML = `
+                <div class="profile-header">
+                    <img src="${userData.image || 'default_profile_image.jpg'}" alt="Profile Image" class="profile-image">
+                    <h1>${userData.name || 'Name not available'}</h1>
+                    <a href="mailto:${userData.email}" class="send-email">Send Email</a>
+                </div>
+                <div class="profile-content">
+                    <h2>Personal Information</h2>
+                    <p><strong>Gender:</strong> ${userData.gender || 'N/A'}</p>
+                    <p><strong>Phone Number:</strong> ${userData.phoneNumber || 'N/A'}</p>
+                    <p><strong>Birth Date:</strong> ${userData.birthDate || 'N/A'}</p>
+                    <p><strong>Age:</strong> ${userData.age || 'N/A'}</p>
+                    <p><strong>Interests:</strong> ${userData.interests || 'No interests listed.'}</p>
+                    <h2>Professional Information</h2>
+                    <p><strong>University:</strong> ${userData.university || 'N/A'}</p>
+                    <p><strong>Major:</strong> ${userData.major || 'N/A'}</p>
+                    <p><strong>Year of Registration:</strong> ${userData.yearOfRegistration || 'N/A'}</p>
+                    <p><strong>Year of Graduation:</strong> ${userData.graduationYear || 'N/A'}</p>
+                    <p><strong>Current Job:</strong> ${userData.currentJob || 'No current job listed.'}</p>
+                    <p><strong>Clubs:</strong> ${userData.clubs || 'No clubs listed.'}</p>
+                    <p><strong>Social Networks:</strong> ${userData.socialNetworks || 'No social networks listed.'}</p>
+                    <p><strong>Short Bio:</strong><br>${formatShortBio(userData.shortbio || 'No bio provided.')}</p>
+                </div>
+            `;
+        }
+
+        window.onload = function() {
+            fetchAndDisplayUserInfo();
+        };
+    </script>
+</body>
+</html>

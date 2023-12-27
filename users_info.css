@@ -1,0 +1,195 @@
+
+body {
+    background-image: url('6.jpg'); /* Update with the actual path to your image */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover; /* Ensure the whole image is always visible */
+    background-attachment: fixed; /* Optional: to keep the image fixed during scroll */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    backdrop-filter: blur(10px); /* Blur effect for background */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+}
+
+.user-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user-card {
+    border: 1px solid #eceff1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 10px;
+    width: calc(30% - 50px); /* Adjust width for 3 cards per row */
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+
+.user-card-link {
+    text-decoration: none; /* Removes underline from links */
+    color: inherit; /* Keeps the text color consistent */
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.user-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #6dd5ed;
+    object-fit: cover;
+}
+
+.user-details {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #424242;
+}
+
+.sign-out-btn {
+    display: block;
+    padding: 10px 20px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transition: background-color 0.3s;
+}
+
+.sign-out-btn:hover {
+    background-color: #ff5252;
+}
+
+@media (max-width: 768px) {
+    .user-card {
+      width: calc(50% - 20px);
+    }
+}
+
+@media (max-width: 480px) {
+    .user-card {
+      width: 100%;
+    }
+}
+
+
+.profile-dropdown {
+    position: fixed; /* Fixed position */
+    right: 10px; /* 10px from the right */
+    top: 10px; /* 10px from the top */
+    width: auto; /* Auto width based on content */
+    padding: 10px 20px; /* Padding for aesthetic spacing */
+    background-color: #2c3e50; /* Dark slate color for the background */
+    color: rgb(255, 255, 255); /* Light color for text */
+    border-radius: 30px; /* Rounded borders for a pill shape */
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Indicates this is clickable */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    z-index: 1000; /* Ensure it's above other content */
+    transition: background-color 0.3s, box-shadow 0.3s; /* Smooth transition for hover */
+}
+
+.profile-dropdown:hover {
+    background-color: #34495e; /* Slightly darker on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Larger shadow on hover */
+}
+
+
+
+/* Initially hide the profile options */
+.profile-options {
+    display: none;
+    position: absolute;
+    right: 0; /* Align to the right */
+    top: 100%; /* Below the dropdown */
+    width: 220px; /* Width of dropdown */
+    background-color: #34495e; /* Slightly darker background */
+    border-radius: 5px; /* Slightly rounded corners for dropdown */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Shadow for dropdown */
+    z-index: 1000;
+}
+
+.profile-options button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #2c3e50; /* Background of options */
+    color: rgb(255, 255, 255); /* Text color */
+    text-align: left; /* Align text to left */
+    transition: background-color 0.2s; /* Smooth transition for hover */
+}
+
+.profile-options button:hover {
+    background-color: #3b5998; /* Highlight color on hover */
+}
+
+/* Remove default button styles */
+button {
+    cursor: pointer;
+    outline: none;
+}
+
+.profile-link {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: rgb(255, 255, 255); /* Adjust if you have a different text color */
+    background-color: #2c3e50; /* Adjust to match your button background */
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.profile-link:hover {
+    background-color: #3b5998; /* Highlight color on hover */
+}
+
+
+
+#loadMore {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;  /* Adjust as needed */
+}
+
+#loadMore:hover {
+    background-color: #0056b3;
+}

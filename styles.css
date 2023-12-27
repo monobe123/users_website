@@ -1,0 +1,326 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.header {
+    position: absolute;
+    top: 10px;
+    left: 50px;
+}
+
+.alumni-text {
+    font-size: 2.5rem;
+    color: white;
+}
+
+/* Top Center Navigation */
+.top-center-nav {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 410%;
+    transform: translateX(-50%);
+    padding: 10px 0;
+}
+
+.top-center-nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+/* Body and Background Styles */
+body {
+    background-color: #f4f7f6;
+    background-image: url('1.jpg'); /* Replace with your image path */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 120% auto; /* Scales the width of the background image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 16px;
+    position: relative; /* For absolute positioning of children */
+}
+
+/* Login Button Style */
+.trigger-button {
+    background-color: #6b63ff00;  /* Transparent Background color for the button */
+    color: #ffffff;               /* Text color */
+    border: 2px solid #ffffff;    /* White border */
+    padding: 0;                   /* No padding */
+    width: 3cm;                   /* Width of the button */
+    height: 1cm;                  /* Height of the button */
+    text-align: center;           /* Center the text inside the button */
+    line-height: 1cm;             /* Center the text vertically */
+    border-radius: 20px;          /* Rounded corners */
+    cursor: pointer;              /* Cursor to indicate it's clickable */
+    font-size: 1rem;              /* Adjust font size as needed */
+    position: absolute;           /* Position relative to the body */
+    top: 8px;                    /* 10px from the top */
+    right: 10px;                  /* 10px from the right */
+}
+
+.trigger-button:hover {
+    background-color: #5753c9;  /* Color change on hover */
+}
+
+/* Card Style for Forms */
+.card {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+    position: fixed; /* Fixed position */
+    top: 50%;        /* Center vertically */
+    left: 53.5%;       /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset by half its width and height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2; /* Ensure it's above other elements */
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Input Fields Styles */
+input[type='email'],
+input[type='password'] {
+    border: none;
+    border-bottom: 2px solid #dde1e7;
+    margin-bottom: 1.5rem;
+    padding: 10px;
+    font-size: 1rem;
+    width: calc(100% - 20px); /* Account for padding */
+    outline: none;
+    position: relative; /* For positioning the eye icon */
+}
+
+/* Placeholder Styles */
+input[type='email']::placeholder,
+input[type='password']::placeholder {
+    color: #bbc1c7;
+}
+
+/* Eye Icon for Password Field */
+.password-input::after {
+    content: '👁'; /* Eye icon - you can replace it with an image if needed */
+    position: absolute;
+    right: 10px;   /* Positioned to the right inside the input */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.toggle-password-eye {
+    position: absolute;
+    right: 10px;
+    top: 45%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+
+/* Button Styles */
+button {
+    background-color: #6c63ff;
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    display: block;
+    width: 100%;
+    margin-top: 5px; /* Space between the inputs and the button */
+}
+
+button:hover {
+    background-color: #5753c9;
+}
+
+/* Heading Styles */
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Error Message Styles */
+#error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+/* Link Styles */
+a {
+    color: #6c63ff;
+    text-decoration: none;
+}
+
+/* Hide labels for cleaner look */
+label {
+    display: none;
+}
+
+/* Footer Links */
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1rem;
+    }
+
+    button {
+        padding: 0.5rem 1rem;
+    }
+
+    .trigger-button {
+        padding: 5px; /* Even smaller padding for mobile */
+        font-size: 0.7rem; /* Even smaller font size for mobile */
+    }
+}
+@keyframes fadeInScaleUp {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translate(-50%, -50%);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translate(-50%, -50%);
+    }
+  }
+
+
+  .animated-title {
+    position: absolute;
+    left: 0;
+    top: 680%;
+    transform: translateY(-50%);
+    width: 300%;
+    text-align: left; /* Aligns text to the left */
+}
+
+.glitch {
+    display: block; /* Ensures each glitch element takes its own line */
+    font-size: 3rem; /* Or any appropriate size */
+    color: white; /* Or any appropriate size */ /* Base color */
+    animation: glitch-skew 2s infinite linear alternate-reverse;
+}
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    left: 2px;
+}
+
+.glitch::before {
+    color: rgb(0, 255, 30);
+    animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    color: rgb(51, 255, 0);
+    animation: glitch-anim2 2s infinite linear alternate-reverse;
+}
+
+/* Keyframes for the glitch effect */
+@keyframes glitch-anim {
+    0% {
+        clip: rect(24px, 9999px, 90px, 0);
+        transform: skew(0.41deg);
+    }
+    5% {
+        clip: rect(85px, 9999px, 131px, 0);
+    }
+    10% {
+        clip: rect(85px, 9999px, 23px, 0);
+        transform: skew(0.41deg);
+    }
+    /* ... continue altering clip and skew values ... */
+    100% {
+        clip: rect(88px, 9999px, 27px, 0);
+        transform: skew(0.41deg);
+    }
+}
+
+@keyframes glitch-anim2 {
+    0% {
+        clip: rect(65px, 9999px, 450px, 0);
+        transform: skew(-0.41deg);
+    }
+    5% {
+        clip: rect(2px, 9999px, 306px, 0);
+    }
+    10% {
+        clip: rect(33px, 9999px, 450px, 0);
+        transform: skew(-0.41deg);
+    }
+    /* ... continue altering clip and skew values ... */
+    100% {
+        clip: rect(330px, 9999px, 450px, 0);
+        transform: skew(-0.41deg);
+    }
+}
+
+@keyframes glitch-skew {
+    0%, 100% {
+        transform: skewY(-1deg);
+    }
+    50% {
+        transform: skewY(1deg);
+    }
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
+
+.password-input::after {
+    content: '👁'; /* Eye icon - you can replace it with an image if needed */
+    position: absolute;
+    right: 10px;   /* Positioned to the right inside the input */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+/* Styling the placeholder text */
+.password-input::placeholder {
+    /* Default placeholder styling */
+    color: #ccc;
+}
+
+/* Styling the placeholder when password is visible */
+.password-input.text-visible::placeholder {
+    /* Adjusted placeholder styling */
+    color: #f00; /* Example: change color to red */
+    font-style: italic; /* Example style */
+}

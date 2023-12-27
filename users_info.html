@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Students Information</title>
+    <link rel="stylesheet" href="users_info.css">
+    <link rel="stylesheet" href="filter_users_info.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            // ...Your Firebase configuration
+        databaseURL: "https://alumni-150d5-default-rtdb.firebaseio.com",
+      apiKey: "AIzaSyCTGgkLiY9mVLXdOdkYZwtkRXgR1eBF23g",
+      authDomain: "alumni-150d5.firebaseapp.com",
+      projectId: "alumni-150d5",
+      storageBucket: "alumni-150d5.appspot.com",
+      messagingSenderId: "464642797756",
+      appId: "1:464642797756:web:2b81c5d09a2caac2b3e0b9",
+      measurementId: "G-VV6KQNKP6W"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        window.onload = () => {
+            displayAllUsersInfo();
+        };
+
+        function displayAllUsersInfo() {
+            firebase.database().ref('users').once('value').then(snapshot => {
+                const usersData = snapshot.val();
+                updateUsersDisplay(usersData);
+            }).catch(error => {
+                console.error("Error fetching users' data:", error);
+            });
+        }
+
+        function applyFilters() {
+            const majorFilter = document.getElementById('filterMajor').value.toLowerCase();
+            const yearOfRegistrationFilter = document.getElementById('filterYearOfRegistration').value.toLowerCase();
+            const cityFilter = document.getElementById('filterCity').value.toLowerCase();
+
+            firebase.database().ref('users').once('value').then(snapshot => {
+                const usersData = snapshot.val();
+                updateUsersDisplay(usersData, majorFilter, yearOfRegistrationFilter, cityFilter);
+            }).catch(error => {
+                console.error("Error fetching users' data:", error);
+            });
+        }
+
+        function updateUsersDisplay(usersData, majorFilter = '', yearOfRegistrationFilter = '', cityFilter = '') {
+            const usersInfoDiv = document.getElementById('users-info');
+            let usersHtml = '';
+
+            for (const userId in usersData) {
+                const userData = usersData[userId];
+                if (shouldDisplayUser(userData, majorFilter, yearOfRegistrationFilter, cityFilter)) {
+                    usersHtml += generateUserCardHtml(userData);
+                }
+            }
+
+            usersInfoDiv.innerHTML = usersHtml;
+        }
+
+        function shouldDisplayUser(userData, majorFilter, yearOfRegistrationFilter, cityFilter) {
+            return (!majorFilter || userData.major.toLowerCase().includes(majorFilter)) &&
+                   (!yearOfRegistrationFilter || userData.yearOfRegistration.toLowerCase().includes(yearOfRegistrationFilter)) &&
+                   (!cityFilter || userData.city.toLowerCase().includes(cityFilter));
+        }
+
+        function generateUserCardHtml(userData, userId) {
+        // Wrap user card in anchor tag to make it clickable
+        return `
+            <a href="person.html?userId=${userId}" class="user-card">
+                <img src="${userData.image || 'default_image_url'}" alt="Profile Image">
+                <div class="user-details">
+                    <p><strong>Name:</strong> ${userData.name}</p>
+                    <p><strong>Last Name:</strong> ${userData.lastName}</p>
+                    <p><strong>University:</strong> ${userData.university}</p>
+                    <p><strong>Major:</strong> ${userData.major}</p>
+                </div>
+            </a>
+        `;
+    }
+
+        function signOut() {
+            firebase.auth().signOut().then(() => {
+                window.location.href = "index.html";
+            }).catch(error => {
+                console.error("Error signing out:", error);
+            });
+        }
+        function toggleFilterVisibility() {
+        const container = document.querySelector('.container');
+        container.classList.toggle('show-filters');
+        }
+
+        function toggleProfileMenu() {
+    var profileOptions = document.getElementById("profile-options");
+    if (profileOptions.style.display === "block") {
+        profileOptions.style.display = "none";
+    } else {
+        profileOptions.style.display = "block";
+    }
+}
+
+let currentSet = 0;
+const usersPerPage = 6;
+
+function updateUsersDisplay(usersData, majorFilter = '', yearOfRegistrationFilter = '', cityFilter = '', startFrom = 0) {
+    const usersInfoDiv = document.getElementById('users-info');
+    let usersHtml = '';
+    let displayedCount = 0;
+
+    // Filter and paginate users
+    const filteredUsers = Object.keys(usersData)
+        .filter(userId => shouldDisplayUser(usersData[userId], majorFilter, yearOfRegistrationFilter, cityFilter))
+        .slice(startFrom, startFrom + usersPerPage);  // Paginate
+
+    filteredUsers.forEach(userId => {
+        const userData = usersData[userId];
+        usersHtml += generateUserCardHtml(userData, userId);  // Generate HTML for each user
+        displayedCount++;
+    });
+
+    // Append new users or replace old ones
+    if(startFrom > 0) {
+        usersInfoDiv.innerHTML += usersHtml;  // Append new users
+    } else {
+        usersInfoDiv.innerHTML = usersHtml;   // Replace all users
+    }
+
+    // Update currentSet
+    currentSet = startFrom + displayedCount;
+
+    // Hide or show the Load More button
+    document.getElementById('loadMore').style.display = currentSet >= Object.keys(usersData).length ? 'none' : 'block';
+}
+
+
+function loadMoreUsers() {
+    firebase.database().ref('users').once('value').then(snapshot => {
+        const usersData = snapshot.val();
+        updateUsersDisplay(usersData, '', '', '', currentSet);
+    }).catch(error => {
+        console.error("Error fetching users' data:", error);
+    });
+}
+
+// Initial call to load the users
+window.onload = () => {
+    loadMoreUsers();  // Load initial users
+};
+
+
+
+    </script>
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="profile-dropdown">
+            <button onclick="toggleProfileMenu()">Profile</button>
+            <div class="profile-options" id="profile-options">
+                <a href="profile_info.html" class="profile-link">Profile Info</a>
+                <a href="user_info.html" class="profile-link">Change Info</a>
+                <button onclick="signOut()">Sign Out</button>
+            </div>
+        </div>
+        <h1>All Students Information</h1>
+        <button class="filter-btn" onclick="toggleFilterVisibility()">Filter by</button>
+        <div class="filters">
+            <input type="text" id="filterMajor" placeholder="Filter by Major">
+            <input type="text" id="filterYearOfRegistration" placeholder="Filter by Year of Registration">
+            <input type="text" id="filterCity" placeholder="Filter by City">
+            <button class="filter-btn" onclick="applyFilters()">Apply Filters</button>
+        </div>
+        <div id="users-info" class="user-row">
+            <!-- User information will be displayed here -->
+        </div>
+        <button id="loadMore" onclick="loadMoreUsers()">Load More</button>
+    </div>
+</body>
+</html>

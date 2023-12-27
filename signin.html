@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+  <script>
+    // Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTGgkLiY9mVLXdOdkYZwtkRXgR1eBF23g",
+      authDomain: "alumni-150d5.firebaseapp.com",
+      projectId: "alumni-150d5",
+      storageBucket: "alumni-150d5.appspot.com",
+      messagingSenderId: "464642797756",
+      appId: "1:464642797756:web:2b81c5d09a2caac2b3e0b9",
+      measurementId: "G-VV6KQNKP6W"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Function to handle sign up
+    function signUp() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        document.getElementById('error-message').innerText = "Passwords do not match.";
+        return;
+      }
+
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          userCredential.user.sendEmailVerification()
+            .then(() => {
+              document.getElementById('success-message').innerText = "Successful signup! Verification email sent.";
+              document.getElementById('success-message').style.display = 'block';
+              setTimeout(() => {
+                window.location.href = "index.html";
+              }, 3000);
+            })
+            .catch((error) => {
+              console.error(error);
+              document.getElementById('error-message').innerText = error.message;
+            });
+        })
+        .catch((error) => {
+          document.getElementById('error-message').innerText = error.message;
+        });
+    }
+    function redirectToIndex() {
+    // Here you can also include any other logic you need to execute before redirection
+    window.location.href = 'index.html'; // Redirect to index.html
+}
+  </script>
+</head>
+<body>
+  <div class="header">
+    <span class="alumni-text">ALUMNI</span>
+    <nav class="top-center-nav">
+      <a href="index.html">Home</a>
+      <a href="infos.html">Infos</a>
+    </nav>
+  </div>
+  <button onclick="redirectToIndex()" class="trigger-button">Login</button>
+  <div class="card">
+    <h1>Sign Up</h1>
+    <form id="signup-form">
+      <input type="email" id="email" placeholder="Enter your Email" required>
+      <input type="password" id="password" placeholder="Create a Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <button type="button" onclick="signUp()">Sign Up</button>
+      <p id="error-message"></p>
+      <br>
+      <p id="success-message" style="display: none; color: green;"></p>
+      <br>
+    </form>
+    <p>Already have an account? <a href="index.html">Login</a></p>
+  </div>
+</body>
+</html>
